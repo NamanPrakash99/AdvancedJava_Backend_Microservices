@@ -95,51 +95,6 @@ Client ──POST──▶ Order Service ──Publish──▶ RabbitMQ ──C
 ```
 ---
 
-## 📡 Eureka Server — Service Discovery
-
-> One of the **most important** components in a Microservices architecture.
-
-In a microservices system, services need to **find each other** to communicate. Instead of hardcoding IP addresses and ports, we use **Eureka Server** as a central registry.
-
-### How It Works
-```
-┌─────────────────────────────────────────────────────┐
-│                  EUREKA SERVER                      │
-│               (Service Registry)                    │
-│                                                     │
-│   Registered Services:                              │
-│   ┌──────────────────┐  ┌──────────────────┐       │
-│   │  user-service     │  │  payment-service  │      │
-│   │  localhost:8081   │  │  localhost:8082   │       │
-│   └──────────────────┘  └──────────────────┘       │
-│   ┌──────────────────┐  ┌──────────────────┐       │
-│   │  order-service    │  │  product-service  │      │
-│   │  localhost:8083   │  │  localhost:8084   │       │
-│   └──────────────────┘  └──────────────────┘       │
-└─────────────────────────────────────────────────────┘
-```
-
-| Step | What Happens |
-|------|-------------|
-| 1️⃣ | Each microservice **registers** itself with Eureka on startup |
-| 2️⃣ | Eureka keeps a **live registry** of all running services |
-| 3️⃣ | When `user-service` needs to call `payment-service`, it **asks Eureka** for the address |
-| 4️⃣ | Eureka returns the address, and the services communicate |
-| 5️⃣ | If a service goes down, Eureka **removes it** from the registry automatically |
-
-### Key Annotations Used
-| Annotation | Where | Purpose |
-|------------|-------|---------|
-| `@EnableEurekaServer` | Eureka Server App | Starts the service registry |
-| `@EnableDiscoveryClient` | All other services | Registers the service with Eureka |
-| `@FeignClient("service-name")` | Calling service | Calls another service by name (no hardcoded URL!) |
-
-### Eureka Dashboard
-- URL: **`http://localhost:8761`**
-- Shows all registered services, their status, and health
-
----
-
 ## 🛠️ Tech Stack
 
 | Technology        | Purpose                          |
